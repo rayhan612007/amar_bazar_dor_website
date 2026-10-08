@@ -1,14 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Serif_Bengali } from "next/font/google";
 import "./globals.css";
+import Navbar from "./components/header/Navbar";
+import Footer from "./components/header/Footer";
+import { Suspense } from "react";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const notoserifbengali = Noto_Serif_Bengali({
+  subsets: ["bengali"],
+  variable: "--font-noto-serif-bengali",
 });
 
 export const metadata = {
@@ -19,10 +17,21 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="
+      En"
+      className={`${notoserifbengali.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex  flex-col">
+
+        <Suspense fallback='loading'>
+          <Navbar />
+          <main className="container max-w-6xl mx-auto">
+            {children}
+
+          </main>
+          <Footer />
+        </Suspense>
+      </body>
     </html>
   );
 }
