@@ -83,7 +83,7 @@ const Navlog = () => {
           {/* Dropdown Menu */}
           <ul
             tabIndex={0}
-            className="dropdown-content menu z-[50] mt-2 w-64 gap-1 rounded-2xl border border-gray-100 bg-white p-4 text-gray-700 shadow-xl"
+            className="dropdown-content menu z-50 mt-2 w-64 gap-1 rounded-2xl border border-gray-100 bg-white p-4 text-gray-700 shadow-xl"
           >
             {/* User Info */}
             <li className="pointer-events-none px-2 py-1">

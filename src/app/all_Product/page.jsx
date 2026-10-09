@@ -34,7 +34,7 @@ const AllProductpage = async () => {
                 {/* Hero Header */}
                 <section className="mb-8">
                     <div className="overflow-hidden rounded-[28px] border border-[#dce5df] bg-[#fbfdfc]">
-                        <div className="flex min-h-[380px] items-center justify-between px-6 py-8 md:px-12 lg:px-16">
+                        <div className="flex min-h-95 items-center justify-between px-6 py-8 md:px-12 lg:px-16">
                             {/* Left Content */}
                             <div className="max-w-2xl">
                                 <div className="mb-4 inline-flex rounded-full bg-[#e3f4eb] px-4 py-1.5">
@@ -43,7 +43,7 @@ const AllProductpage = async () => {
                                     </p>
                                 </div>
 
-                                <h1 className="font-(--font-noto-serif-bengali) text-3xl font-bold leading-tight text-[#101914] sm:text-4xl md:text-5xl lg:text-[52px]">
+                                <h1 className="font-(--font-noto-serif-bengali) text-3xl leading-tight text-[#101914] sm:text-4xl md:text-5xl lg:text-[52px]">
                                     আজকের বাজারের দাম এক নজরে
                                 </h1>
 
