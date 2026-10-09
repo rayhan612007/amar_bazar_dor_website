@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { FiArrowDown, FiArrowUp, FiMinus } from "react-icons/fi";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 
@@ -23,7 +22,6 @@ const ProductCard = ({ product }) => {
     }[product?.unit] || product?.unit || "কেজি";
 
     const price = Number(product?.today);
-    console.log(product);
 
 
     return (

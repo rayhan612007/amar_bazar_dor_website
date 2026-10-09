@@ -9,14 +9,10 @@ const AllProductpage = async () => {
     await connection();
 
     let products = [];
-    try {
-        const response = await fetch("https://api.abcz.workers.dev/api/bazardor/products");
-        if (response.ok) {
-            const data = await response.json();
-            products = Array.isArray(data) ? data : [];
-        }
-    } catch (error) {
-        console.error("Failed to fetch products:", error);
+    const response = await fetch("https://api.api-store.workers.dev/api/bazardor");
+    if (response.ok) {
+        const data = await response.json();
+        products = Array.isArray(data) ? data : [];
     }
 
     const uppriceproduct = products.filter((item) => item?.change?.dir === "up");
