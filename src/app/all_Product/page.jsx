@@ -10,9 +10,7 @@ const AllProductpage = async () => {
 
     let products = [];
     try {
-        const response = await fetch("https://api.abcz.workers.dev/api/bazardor/products", {
-            next: { revalidate: 60 }
-        });
+        const response = await fetch("https://api.abcz.workers.dev/api/bazardor/products");
         if (response.ok) {
             const data = await response.json();
             products = Array.isArray(data) ? data : [];
