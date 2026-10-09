@@ -1,123 +1,103 @@
-// import Image from "next/image";
-// import Navlink from "./Navlink";
-// import Navlog from "./Navlog";
-// import Link from "next/link";
-// import Marquee from "./Marquee";
-// import { Suspense } from "react";
-
-// const Navbar = () => {
-//     // const today = new Date().toLocaleDateString("bn-BD", { dateStyle: 'full' })
-//     return (
-//         <Suspense fallback="<p>loading..</p>" >
-//             {/* top */}
-//             <div className="container mx-auto my-5 flex justify-between">
-//                 {/* left */}
-//                 <Link href='/'>
-//                     <div className="flex items-center gap-3">
-//                         <div className="w-fit rounded-2xl border-0 bg-green-600 p-4">
-//                             <Image
-//                                 src="/logo-icon.png"
-//                                 alt="bazardor_image"
-//                                 width={30}
-//                                 height={30}
-//                             />
-//                         </div>
-
-//                         <div>
-//                             <h1 className="text-2xl font-bold">বাজার দর</h1>
-//                             {/* <p>{today}</p> */}
-//                         </div>
-//                     </div>
-//                 </Link>
-
-//                 {/* right */}
-//                 <Navlog />
-
-//             </div>
-
-//             {/* bottom */}
-
-//             <Navlink />
-//             <Marquee />
-//         </Suspense>
-//     );
-// };
-
-// export default Navbar;
 import { connection } from "next/server";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
+
 import Navlog from "./Navlog";
 import Navlink from "./Navlink";
 import Marquee from "./Marquee";
 
-// Server wrapper component fetching categories safely
+// Fetch categories on the server
 async function CategoriesWrapper() {
     try {
         const response = await fetch(
-            "https://api.api-store.workers.dev/api/bazardor/categories"
+            "https://api.api-store.workers.dev/api/bazardor/categories",
+            { cache: "no-store" }
         );
 
-        if (!response.ok) throw new Error("Failed to fetch categories");
+        if (!response.ok) {
+            throw new Error("Failed to fetch categories");
+        }
 
-        const categories = await response.json();
+        const data = await response.json();
+
+        const categories = Array.isArray(data)
+            ? data
+            : data.categories || data.data || [];
+
         return <Navlink categories={categories} />;
     } catch (error) {
         console.error("Error fetching categories:", error);
+
         return <Navlink categories={[]} />;
     }
 }
 
+// Navbar component
 const Navbar = async () => {
     await connection();
-    const today = new Date()?.toLocaleDateString("bn-BD", {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+
+    const today = new Date().toLocaleDateString("bn-BD", {
+        timeZone: "Asia/Dhaka",
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
     });
 
     return (
-        <header className="bg-base-100 shadow-sm border-b border-base-200">
+        <header className="border-b border-base-200 bg-base-100 shadow-sm">
             {/* Top Bar */}
-            <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div className="container mx-auto flex items-center justify-between px-4 py-3">
                 {/* Brand Logo & Name */}
-                <Link href="/" className="flex items-center gap-3 group">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/30 group-hover:scale-105 transition-transform">
+                <Link
+                    href="/"
+                    className="group flex items-center gap-3"
+                >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-md shadow-emerald-600/30 transition-transform group-hover:scale-105">
                         <Image
                             src="/logo-icon.png"
                             alt="বাজার দর লোগো"
                             width={28}
                             height={28}
+                            priority
                             className="object-contain"
                         />
                     </div>
 
                     <div>
-                        <h1 className="text-xl md:text-2xl font-bold tracking-tight text-base-content">
-                            বাজার <span className="text-emerald-600">দর</span>
+                        <h1 className="text-xl font-bold tracking-tight text-base-content md:text-2xl">
+                            বাজার{" "}
+                            <span className="text-emerald-600">
+                                দর
+                            </span>
                         </h1>
-                        <p className="text-xs text-base-content/60 hidden md:block">
+
+                        <p className="hidden text-xs text-base-content/60 md:block">
                             {today}
                         </p>
                     </div>
                 </Link>
 
-                {/* Right Action / Auth Buttons */}
+                {/* Authentication */}
                 <Navlog />
             </div>
 
-            {/* Categories Navigation Bar */}
-            <Suspense fallback={
-                <div className="flex gap-2 p-3 justify-center bg-base-200/60">
-                    <span className="loading loading-dots loading-sm text-emerald-600"></span>
-                </div>
-            }>
+            {/* Categories Navigation */}
+            <Suspense
+                fallback={
+                    <div className="flex items-center justify-center gap-2 border-y border-base-300 bg-base-200/60 p-3">
+                        <span className="loading loading-dots loading-sm text-emerald-600" />
+                        <span className="text-sm text-base-content/60">
+                            ক্যাটাগরি লোড হচ্ছে...
+                        </span>
+                    </div>
+                }
+            >
                 <CategoriesWrapper />
             </Suspense>
 
-            {/* Ticker / Marquee */}
+            {/* Price Ticker */}
             <Marquee />
         </header>
     );

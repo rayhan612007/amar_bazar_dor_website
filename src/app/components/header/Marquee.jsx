@@ -1,12 +1,15 @@
 import React from "react";
 import Marquee from "react-fast-marquee";
+import { FiMinus } from "react-icons/fi";
+import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 
 const PriceMarquee = async () => {
     let products = [];
 
     try {
         const response = await fetch(
-            "https://api.api-store.workers.dev/api/bazardor/products"
+            "https://api.api-store.workers.dev/api/bazardor/products",
+            { cache: "no-store" }
         );
 
         if (!response.ok) {
@@ -38,57 +41,70 @@ const PriceMarquee = async () => {
     };
 
     const toBanglaNumber = (value) => {
-        if (value === null || value === undefined) return "";
+        if (value === null || value === undefined || value === "") {
+            return "";
+        }
 
         return Number(value).toLocaleString("bn-BD");
     };
 
     return (
         <div className="w-full border-y border-gray-200 bg-[#fbfbfa] py-2">
-            <Marquee
-                speed={150}
-                pauseOnHover
-                gradient={false}
-            >
-                {products.map((item, i) => {
-                    const isUp = item.change?.dir === "up";
+            <Marquee speed={80} pauseOnHover gradient={false}>
+                {products.map((item, index) => {
+                    const changeValue = Number(
+                        item.change?.pct ??
+                        item.changePercent ??
+                        0
+                    );
 
-                    const changeValue =
-                        item.change?.pct ?? item.changePercent ?? 0;
+                    const isUp =
+                        item.change?.dir === "up" ||
+                        (!item.change?.dir && changeValue > 0);
+
+                    const isDown =
+                        item.change?.dir === "down" ||
+                        (!item.change?.dir && changeValue < 0);
+
+                    const arrow = isUp
+                        ? <GoTriangleUp className="text-2xl text-red-500" />
+                        : isDown
+                            ? <GoTriangleDown className="text-2xl text-emerald-600" />
+                            : <FiMinus className="text-gray-500 text-2xl" />;
+                    const parsent = isUp
+                        ? "%"
+                        : isDown
+                            ? "%"
+                            : "";
 
                     return (
-
                         <div
-                            key={item.id || i}
+                            key={item.id ?? item.slug ?? index}
                             className="flex items-center gap-2 whitespace-nowrap border-r border-gray-300 px-6 text-sm text-gray-800"
                         >
-                            {/* Product Image */}
-                            {item.categoryIcon}
+                            {/* Category Icon */}
+                            <span>{item.categoryIcon}</span>
 
                             {/* Product Name */}
                             <span className="font-semibold">
                                 {item.nameBn}
                             </span>
 
-                            {/* Price & Unit */}
+                            {/* Current Price */}
                             <span>
                                 {toBanglaNumber(item.today)} টাকা/
                                 {getUnitText(item.unit)}
                             </span>
 
                             {/* Price Change */}
-                            <span
-                                className={`flex items-center gap-1 text-xs font-bold ${isUp ? "text-red-500" : "text-emerald-600"
-                                    }`}
-                            >
-                                <span>{isUp ? "▲" : "▼"}</span>
-
+                            <span className="flex items-center gap-1 text-xs font-bold">
+                                <span>{arrow}</span>
                                 <span>
-                                    {Math.abs(Number(changeValue)).toLocaleString("bn-BD")}%
+                                    {toBanglaNumber(Math.abs(changeValue))}
+                                    {changeValue !== 0 ? "%" : ""}
                                 </span>
                             </span>
                         </div>
-
                     );
                 })}
             </Marquee>

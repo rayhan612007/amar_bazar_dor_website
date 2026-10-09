@@ -1,75 +1,102 @@
-import { FiArrowDown, FiArrowUp } from "react-icons/fi";
+import Link from "next/link";
+import Image from "next/image";
+import { FiArrowDown, FiArrowUp, FiMinus } from "react-icons/fi";
+import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 
 const ProductCard = ({ product }) => {
+    const change = product?.change ?? {};
+
+    const changeValue = Number(
+        change.pct ?? product?.changePercent ?? 0
+    );
+
+    const direction =
+        change.dir ||
+        (changeValue > 0 ? "up" : changeValue < 0 ? "down" : "flat");
+
+
+    const unitText = {
+        kg: "কেজি",
+        litre: "লিটার",
+        piece: "পিস",
+        dozen: "ডজন",
+    }[product?.unit] || product?.unit || "কেজি";
+
+    const price = Number(product?.today);
+    console.log(product);
+
 
     return (
-        <div className="rounded-2xl border border-gray-200 bg-white p-4 transition hover:border-green-500">
+        <Link
+            href={`/product/${product?.slug || product?.id}`}
+            className="block h-full"
+        >
+            <div className="h-full rounded-2xl border border-gray-200 bg-white p-4 transition hover:border-green-500 hover:shadow-md">
+                {/* Product top */}
+                <div className="flex items-start gap-3">
+                    {/* Product Icon / Image */}
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#f1f5f1] text-2xl">
+                        <p>{product?.image || "[]"}</p>
+                    </div>
 
-            {/* Product top */}
-            <div className="flex items-start gap-3">
-
-                {/* Image */}
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#f1f5f1]">
-
-                    <p>{product.image}</p>
+                    {/* Product Name */}
+                    <div className="min-w-0">
+                        <h3 className="wrap-break-word text-base font-bold text-gray-900 sm:text-lg">
+                            {product?.nameBn || "পণ্য"}
+                        </h3>
+                        <p className="text-xs text-gray-500 sm:text-sm">
+                            প্রতি {unitText}
+                        </p>
+                    </div>
                 </div>
 
-
-                {/* Name */}
-                <div>
-                    <h2 className="text-lg font-bold text-gray-900">
-                        {product.nameBn}
-                    </h2>
-
-                    <p className="text-sm text-gray-500">
-                        প্রতি কেজি
-                    </p>
-                </div>
-
-            </div>
-
-
-            {/* Price */}
-            <div className="mt-4">
-
-                <p className="text-sm text-gray-500">
-                    আজকের দাম
-                </p>
-
-                <div className="mt-1 flex items-center justify-between">
-
-                    <p className="text-xl font-bold text-gray-900">
-                        {product.today?.toLocaleString("bn-BD")} টাকা
+                {/* Price Details */}
+                <div className="mt-4">
+                    <p className="text-xs text-gray-500">
+                        আজকের দাম
                     </p>
 
+                    <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
+                        <p className="text-lg font-bold text-gray-900 sm:text-xl">
+                            {Number.isFinite(price)
+                                ? price.toLocaleString("bn-BD")
+                                : "—"}{" "}
+                            টাকা
+                        </p>
 
-                    {/* Price change */}
-                    <span
-                        className={`flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ${product.change.dir === "up"
-                            ? "bg-red-50 text-red-500"
-                            : product.change.dir === "down"
-                                ? "bg-green-50 text-green-600 "
-                                : "bg-gray-100 text-black"
-                            }`}
-                    >
-                        {product.change.dir === "up" ? (
-                            <FiArrowUp size={12} />
-                        ) : product.change.dir === "down" ? (
-                            <FiArrowDown size={12} />
-                        ) : ""}
+                        {/* Price Change Badge */}
+                        <span
+                            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${direction === "up"
+                                ? "bg-red-50 text-red-500"
+                                : direction === "down"
+                                    ? "bg-green-50 text-green-600"
+                                    : "bg-gray-100 text-gray-600"
+                                }`}
+                        >
+                            {direction === "up" ? (
+                                <GoTriangleUp className="text-2xl text-red-500" />
+                            ) : direction === "down" ? (
+                                <GoTriangleDown className="text-2xl text-emerald-600" />
+                            ) : (
+                                <FiMinus className="text-2xl text-gray-500" />
+                            )}
 
-                        <span>
-                            {product.change.dir === "flat" ? "—০.০" :
-                                Math.abs(product.change.pct).toLocaleString("bn-BD")
-                            }%
+                            <span>
+                                {Math.abs(changeValue).toLocaleString("bn-BD")}
+                                {direction === "up" ? (
+                                    "%"
+                                ) : direction === "down" ? (
+                                    "%"
+                                ) : (
+                                    ""
+                                )}
+                            </span>
                         </span>
-                    </span>
-
+                    </div>
                 </div>
-
             </div>
-
-        </div >
+        </Link>
     );
 };
+
 export default ProductCard;
