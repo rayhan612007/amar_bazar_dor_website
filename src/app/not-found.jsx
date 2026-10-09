@@ -8,12 +8,12 @@ export default function NotFound() {
                 <div className="mb-4 text-6xl">🔍</div>
 
                 {/* 404 Heading */}
-                <h1 className="font-(--font-noto-serif-bengali) text-5xl font-bold text-[#008f49]">
+                <h1 className="font-(--font-noto-serif-bengali) text-5xl text-[#008f49]">
                     ৪০৪
                 </h1>
 
                 {/* Title */}
-                <h2 className="mt-3 font-(--font-noto-serif-bengali) text-2xl font-semibold text-[#101914]">
+                <h2 className="mt-3 font-(--font-noto-serif-bengali) text-2xl text-[#101914]">
                     পৃষ্ঠাটি পাওয়া যায়নি
                 </h2>
 
