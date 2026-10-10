@@ -8,12 +8,8 @@ import Image from "next/image";
 const AllProductpage = async () => {
     await connection();
 
-    let products = [];
-    const response = await fetch("https://api.api-store.workers.dev/api/bazardor");
-    if (response.ok) {
-        const data = await response.json();
-        products = Array.isArray(data) ? data : [];
-    }
+    const response = await fetch("https://api.api-store.workers.dev/api/bazardor/products");
+    const products = await response.json();
 
     const uppriceproduct = products.filter((item) => item?.change?.dir === "up");
     const downpriceproduct = products.filter((item) => item?.change?.dir === "down");

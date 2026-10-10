@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       className={`${notoserifbengali.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-[#f4f8f4] font-sans">
-        <Suspense>
+        <Suspense fallback="">
 
           <ToastContainer
             position="top-center"

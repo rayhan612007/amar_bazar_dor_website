@@ -1,40 +1,34 @@
 import ProductList from "./ProductList";
 import { notFound } from "next/navigation";
 
-const API_URL = "https://api.api-store.workers.dev/api/bazardor";
 
 async function getCategory(slug) {
-    try {
-        const response = await fetch(
-            `${API_URL}/categories/${encodeURIComponent(slug)}`,
-            { cache: "no-store" }
-        );
-
-        if (!response.ok) return null;
-
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch category:", error);
-        return null;
-    }
+    const response = await fetch(`https://api.api-store.workers.dev/api/bazardor/categories/${slug}`)
+    return await response.json();
 }
 
 async function getProducts(slug) {
-    try {
-        const response = await fetch(
-            `${API_URL}/products?category=${encodeURIComponent(slug)}`,
-            { cache: "no-store" }
-        );
-
-        if (!response.ok) return [];
-
-        const data = await response.json();
-        return Array.isArray(data) ? data : data.products || data.data || [];
-    } catch (error) {
-        console.error("Failed to fetch category products:", error);
-        return [];
-    }
+    const response = await fetch(`https://api.api-store.workers.dev/api/bazardor/products?category=${slug}`)
+    return await response.json();
 }
+
+
+
+export default async function CategoryPage({ params }) {
+    const { slug } = await params;
+
+    const [category, products] = await Promise.all([
+        getCategory(slug),
+        getProducts(slug),
+    ]);
+
+    if (!category && products.length === 0) {
+        notFound();
+    }
+
+    return <ProductList category={category} initialProducts={products} />;
+}
+
 
 export async function generateMetadata({ params }) {
     const { slug } = await params;
@@ -63,19 +57,4 @@ export async function generateMetadata({ params }) {
             title: "পণ্যের দাম | বাজার দর",
         };
     }
-}
-
-export default async function CategoryPage({ params }) {
-    const { slug } = await params;
-
-    const [category, products] = await Promise.all([
-        getCategory(slug),
-        getProducts(slug),
-    ]);
-
-    if (!category && products.length === 0) {
-        notFound();
-    }
-
-    return <ProductList category={category} initialProducts={products} />;
 }

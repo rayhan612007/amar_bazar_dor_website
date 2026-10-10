@@ -6,50 +6,21 @@ const PRODUCTS_URL = "https://api.api-store.workers.dev/api/bazardor/products";
 
 // Fetch product by slug
 async function getProductBySlug(slug) {
-    try {
-        const listRes = await fetch(PRODUCTS_URL, {
-            cache: "no-store",
-        });
+    const listRes = await fetch("https://api.api-store.workers.dev/api/bazardor/products")
 
-        if (!listRes.ok) {
-            throw new Error("Failed to load products list");
-        }
+    const data = await listRes.json();
 
-        const data = await listRes.json();
-
-        const products = Array.isArray(data)
-            ? data
-            : data.products || data.data || [];
-
-        const matchedProduct = products.find(
-            (item) => item.slug === slug
-        );
-
-        if (!matchedProduct) {
-            return null;
-        }
-
-        const response = await fetch(
-            `${PRODUCTS_URL}/${matchedProduct.id}`,
-            { cache: "no-store" }
-        );
-
-        if (response.status === 404) {
-            return null;
-        }
-
-        if (!response.ok) {
-            throw new Error("Failed to load product details");
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to fetch product details:", error);
-        return null;
-    }
+    const matchedProduct = products.find(
+        (item) => item.slug === slug
+    );
+    const response = await fetch(
+        `${listRes}/${matchedProduct.id}`,
+        { cache: "no-store" }
+    );
+    return await response.json();
 }
 
-// Convert numbers to Bengali
+
 const toBnNum = (value) => {
     const number = Number(value);
 
@@ -60,7 +31,7 @@ const toBnNum = (value) => {
         : "০";
 };
 
-// Get Bengali unit
+
 const getUnitBn = (unit) => {
     const units = {
         kg: "কেজি",
@@ -73,7 +44,7 @@ const getUnitBn = (unit) => {
     return units[unit] || unit || "একক";
 };
 
-// Dynamic metadata
+
 export async function generateMetadata({ params }) {
     const { slug } = await params;
     const product = await getProductBySlug(slug);
@@ -102,16 +73,11 @@ export default async function ProductDetailPage({ params }) {
         product.nameBn || product.name || "অজানা পণ্য";
 
     const categoryName =
-        product.categoryNameBn ||
-        product.categoryName ||
-        product.category ||
-        "";
+        product.categoryNameBn;
 
-    const categorySlug =
-        product.categorySlug || product.category || "";
+    const categorySlug = product.category;
 
-    const unit =
-        product.unitBn || getUnitBn(product.unit);
+    const unit = getUnitBn(product.unit);
 
     const currentPrice = Number(product.today ?? 0);
     const changePct = Number(product.change?.pct ?? 0);
@@ -119,33 +85,27 @@ export default async function ProductDetailPage({ params }) {
     const isPriceUp = changePct > 0;
     const isPriceDown = changePct < 0;
 
-    const isImageUrl = (str) =>
-        typeof str === "string" && (str.startsWith("/") || str.startsWith("http"));
 
-    // Validate and prepare market prices
-    const markets = Array.isArray(product.markets)
-        ? product.markets
-            .filter(
-                (market) =>
-                    market.min != null &&
-                    market.max != null &&
-                    Number.isFinite(Number(market.min)) &&
-                    Number.isFinite(Number(market.max))
-            )
-            .map((market) => {
-                const min = Number(market.min);
-                const max = Number(market.max);
+    const markets = product.markets
+        .filter(
+            (market) =>
+                market.min != null &&
+                market.max != null &&
+                Number.isFinite(Number(market.min)) &&
+                Number.isFinite(Number(market.max))
+        )
+        .map((market) => {
+            const min = Number(market.min);
+            const max = Number(market.max);
 
-                return {
-                    ...market,
-                    min,
-                    max,
-                    average: (min + max) / 2,
-                };
-            })
-        : [];
+            return {
+                ...market,
+                min,
+                max,
+                average: (min + max) / 2,
+            };
+        });
 
-    // Lowest and highest market prices
     const lowestMarket = markets.length
         ? markets.reduce((lowest, market) =>
             market.min < lowest.min ? market : lowest
@@ -233,19 +193,18 @@ export default async function ProductDetailPage({ params }) {
                             <p className="mt-2 text-xs font-medium text-gray-600 sm:text-sm">
                                 গতকালের তুলনায় আজ দাম{" "}
                                 <span
-                                    className={`font-bold ${
-                                        isPriceUp
-                                            ? "text-red-600"
-                                            : isPriceDown
+                                    className={`font-bold ${isPriceUp
+                                        ? "text-red-600"
+                                        : isPriceDown
                                             ? "text-green-600"
                                             : "text-gray-600"
-                                    }`}
+                                        }`}
                                 >
                                     {isPriceUp
                                         ? "বেড়েছে"
                                         : isPriceDown
-                                        ? "কমেছে"
-                                        : "অপরিবর্তিত"}
+                                            ? "কমেছে"
+                                            : "অপরিবর্তিত"}
 
                                     {(isPriceUp || isPriceDown) &&
                                         ` ${toBnNum(Math.abs(changePct))}%`}
