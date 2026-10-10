@@ -1,6 +1,7 @@
 "use client";
 
 import ProductCard from "@/app/all_Product/ProductCard";
+import NotFound from "@/app/not-found";
 import { useState } from "react";
 
 export default function ProductList({ category, initialProducts = [] }) {
@@ -25,14 +26,10 @@ export default function ProductList({ category, initialProducts = [] }) {
 
     const categoryName =
         category?.nameBn ||
-        category?.category?.nameBn ||
-        initialProducts[0]?.categoryNameBn ||
         "পণ্য তালিকা";
 
     const categoryIcon =
-        category?.icon ||
         category?.categoryIcon ||
-        initialProducts[0]?.categoryIcon ||
         "📦";
 
     return (
@@ -88,11 +85,14 @@ export default function ProductList({ category, initialProducts = [] }) {
                             <ProductCard key={item.id} product={item} />
                         ))}
                     </div>
-                ) : (
-                    <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center text-gray-500">
-                        এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।
-                    </div>
-                )}
+                ) :
+                    (
+                        // <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center text-gray-500">
+                        //     এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।
+                        // </div>
+                        <NotFound/>
+                    )
+                }
             </div>
         </main>
     );
