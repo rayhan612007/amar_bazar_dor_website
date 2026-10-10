@@ -108,7 +108,7 @@ const ProfilePage = () => {
         <div className="flex min-h-screen flex-col items-center justify-start bg-[#f2f5f3] p-4 pt-8 font-sans text-gray-800">
             <div className="w-full max-w-xl">
                 {/* Section Header */}
-                <div className="mb-6 text-center">
+                <div className="mb-6 text-left">
                     <h1 className="text-2xl font-bold tracking-tight text-gray-900">
                         আমার প্রোফাইল
                     </h1>

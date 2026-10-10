@@ -23,14 +23,15 @@ const AllProductpage = async () => {
 
     const products = data;
 
-    const uppriceproduct = products.filter(
-        (item) => item?.change?.dir === "up"
-    );
+    const uppriceproduct = products
+        .filter((item) => item?.change?.dir === "up")
+        .sort((a, b) => (b?.change?.pct ?? 0) - (a?.change?.pct ?? 0))
+        .slice(0, 6);
 
-    const downpriceproduct = products.filter(
-        (item) => item?.change?.dir === "down"
-    );
-
+    const downpriceproduct = products
+        .filter((item) => item?.change?.dir === "down")
+        .sort((b, a) => (b?.change?.pct ?? 0) - (a?.change?.pct ?? 0))
+        .slice(0, 6);
     const today = new Date().toLocaleDateString("bn-BD", {
         dateStyle: "full",
         timeZone: "Asia/Dhaka",
@@ -51,11 +52,11 @@ const AllProductpage = async () => {
                                     </p>
                                 </div>
 
-                                <h1 className="font-(--font-noto-serif-bengali) text-3xl leading-tight text-[#101914] sm:text-4xl md:text-5xl lg:text-[52px]">
+                                <h1 className="font-(--font-noto-serif-bengali) max-w-120 text-xl leading-tight font-semibold text-[#101914] sm:text-2xl md:text-3xl lg:text-4xl">
                                     আজকের বাজারের দাম এক নজরে
                                 </h1>
 
-                                <p className="mt-4 font-(--font-noto-serif-bengali) text-sm leading-6 text-[#52605a] sm:text-base md:text-lg">
+                                <p className="mt-4 font-(--font-noto-serif-bengali) text-sm leading-6 text-[#52605a] sm:text-base md:text-md">
                                     চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও
                                     মসলার দাম — বাজারভিত্তিক বিস্তারিত, গড়,
                                     সর্বনিম্ন-সর্বোচ্চ এবং দামের পরিবর্তনের
