@@ -50,7 +50,7 @@ const PriceMarquee = async () => {
 
     return (
         <div className="w-full border-y border-gray-200 bg-[#fbfbfa] py-2">
-            <Marquee speed={80} pauseOnHover gradient={false}>
+            <Marquee speed={150} pauseOnHover gradient={false}>
                 {products.map((item, index) => {
                     const changeValue = Number(
                         item.change?.pct ??
