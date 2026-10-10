@@ -1,31 +1,49 @@
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
-import React from "react";
 import { connection } from "next/server";
 import ProductCard from "./ProductCard";
+import AllProductsGrid from "./AllProductsGrid";
 import Link from "next/link";
 import Image from "next/image";
 
 const AllProductpage = async () => {
     await connection();
 
-    const response = await fetch("https://api.api-store.workers.dev/api/bazardor/products");
-    const products = await response.json();
+    const response = await fetch(
+        "https://api.api-store.workers.dev/api/bazardor/products",
+        {
+            cache: "no-store",
+        }
+    );
 
-    const uppriceproduct = products.filter((item) => item?.change?.dir === "up");
-    const downpriceproduct = products.filter((item) => item?.change?.dir === "down");
+    if (!response.ok) {
+        throw new Error("Failed to fetch products");
+    }
+
+    const data = await response.json();
+
+    const products = data;
+
+    const uppriceproduct = products.filter(
+        (item) => item?.change?.dir === "up"
+    );
+
+    const downpriceproduct = products.filter(
+        (item) => item?.change?.dir === "down"
+    );
 
     const today = new Date().toLocaleDateString("bn-BD", {
-        dateStyle: "full"
+        dateStyle: "full",
+        timeZone: "Asia/Dhaka",
     });
 
     return (
         <main className="min-h-screen bg-[#f4f8f4] px-4 py-6 md:px-8">
             <div className="mx-auto max-w-7xl">
+
                 {/* Hero Header */}
                 <section className="mb-8">
                     <div className="overflow-hidden rounded-[28px] border border-[#dce5df] bg-[#fbfdfc]">
                         <div className="flex min-h-95 items-center justify-between px-6 py-8 md:px-12 lg:px-16">
-                            {/* Left Content */}
                             <div className="max-w-2xl">
                                 <div className="mb-4 inline-flex rounded-full bg-[#e3f4eb] px-4 py-1.5">
                                     <p className="text-sm font-medium text-[#008b4b]">
@@ -38,8 +56,10 @@ const AllProductpage = async () => {
                                 </h1>
 
                                 <p className="mt-4 font-(--font-noto-serif-bengali) text-sm leading-6 text-[#52605a] sm:text-base md:text-lg">
-                                    চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক
-                                    বিস্তারিত, গড়, সর্বনিম্ন-সর্বোচ্চ এবং দামের পরিবর্তনের এক নজরায়।
+                                    চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও
+                                    মসলার দাম — বাজারভিত্তিক বিস্তারিত, গড়,
+                                    সর্বনিম্ন-সর্বোচ্চ এবং দামের পরিবর্তনের
+                                    এক নজরায়।
                                 </p>
 
                                 <Link
@@ -50,7 +70,6 @@ const AllProductpage = async () => {
                                 </Link>
                             </div>
 
-                            {/* Right Illustration */}
                             <div className="hidden shrink-0 lg:block">
                                 <Image
                                     src="/bazar-hero.png"
@@ -72,9 +91,13 @@ const AllProductpage = async () => {
                             <GoTriangleUp className="text-3xl text-red-600" />
                             আজ দাম বেড়েছে
                         </h2>
+
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {uppriceproduct.slice(0, 6).map((item) => (
-                                <ProductCard key={item.id} product={item} />
+                                <ProductCard
+                                    key={item.id}
+                                    product={item}
+                                />
                             ))}
                         </div>
                     </section>
@@ -87,49 +110,38 @@ const AllProductpage = async () => {
                             <GoTriangleDown className="text-3xl text-green-600" />
                             আজ দাম কমেছে
                         </h2>
+
                         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {downpriceproduct.slice(0, 6).map((item) => (
-                                <ProductCard key={item.id} product={item} />
+                                <ProductCard
+                                    key={item.id}
+                                    product={item}
+                                />
                             ))}
                         </div>
                     </section>
                 )}
 
-                {/* All Products Section Header */}
-                <div id="সব-পণ্য" className="mb-6 flex scroll-mt-6 items-end justify-between">
-                    <div>
+                {/* All Products Section */}
+                <section id="সব-পণ্য" className="scroll-mt-6">
+                    <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900">
                             সব পণ্য
                         </h2>
+
                         <p className="mt-1 text-sm text-gray-500">
-                            মোট {products.length.toLocaleString("bn-BD")}টি পণ্য দেখানো হচ্ছে
+                            মোট {products.length.toLocaleString("bn-BD")}
+                            টি পণ্য দেখানো হচ্ছে
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-gray-600">
-                            সাজান
-                        </span>
-                        <select
-                            className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm outline-none focus:border-emerald-600"
-                            defaultValue="default"
-                        >
-                            <option value="default">ডিফল্ট</option>
-                            <option value="low">কম দাম</option>
-                            <option value="high">বেশি দাম</option>
-                        </select>
-                    </div>
-                </div>
-
-                {/* All Products Grid */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {products.map((product) => (
-                        <ProductCard key={product.id} product={product} />
-                    ))}
-                </div>
+                    <AllProductsGrid products={products} />
+                </section>
             </div>
         </main>
     );
+
+
 };
 
 export default AllProductpage;
