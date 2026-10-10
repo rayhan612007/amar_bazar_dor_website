@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
 
-## Getting Started
+# 🛒 বাজার দর (BazarDor)
 
-First, run the development server:
+  <p><strong>A modern, high-performance real-time essential commodity price tracker built for Bangladesh.</strong></p>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  <p>
+    <img src="https://img.shields.io/badge/Next.js-14+-black?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-3.3+-38BDF8?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/BetterAuth-Authentication-512BD4?style=for-the-badge" alt="BetterAuth" />
+    <img src="https://img.shields.io/badge/Deployed_on-Vercel-black?style=for-the-badge&logo=vercel&logoColor=white" alt="Vercel" />
+  </p>
+</div>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 📌 Overview
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**BazarDor** (**বাজার দর**) is a full-stack, responsive web application designed to bring transparency and quick insights into daily essential commodity prices across markets in Bangladesh. From staple grains and cooking oils to seasonal vegetables and proteins, BazarDor aggregates real-time market trends, price fluctuations, and multi-market breakdowns in a clean, localized user interface.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ✨ Key Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Dynamic Navbar & Real-Time Price Ticker**
+   - Responsive top navigation featuring the brand identity, live localized Bangla date, category quick-links with active route states, and an infinite-scrolling marquee ticker highlighting live price shifts (`▲/▼`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **Actionable Market Trends (Top Risers & Fallers)**
+   - Automatically surfaces daily commodity volatility, featuring dedicated sections for top price increases (`আজ দাম বেড়েছে ▲`) and drops (`আজ দাম কমেছে ▼`) with color-coded percentage badges.
 
-## Deploy on Vercel
+3. **Comprehensive Catalog & Multi-Criteria Filtering**
+   - Displays all essential grocery items across major categories (Rice, Lentils, Oil, Vegetables, Fish, Meat, Dairy, and Spices) in a responsive grid layout with emojis, unit indicators (`প্রতি কেজি`, `প্রতি ডজন`), and dynamic sorting controls.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+4. **Protected Product Details & Multi-Bazar Breakdown**
+   - Secures individual product pages (`/product/[slug]`) behind authentication guards. Delivers statistical summary pricing (Min, Max, and Average) alongside granular cross-market comparisons.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. **Secure Authentication Suite via BetterAuth**
+   - Implements robust authentication supporting Email/Password workflows and Social Logins (Google & GitHub) backed by **BetterAuth**, featuring instant toast notifications (`react-hot-toast`), skeleton loading states, and seamless route redirection.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+- **Framework:** Next.js (App Router with dynamic route handling and Vercel compatibility)
+- **Styling:** Tailwind CSS & DaisyUI components for rapid responsive design
+- **Authentication:** BetterAuth (Email/Password, Google, GitHub integration)
+- **State & UI Feedback:** React Hot Toast, custom skeleton loaders, Lucide/custom iconography
+- **Deployment:** Vercel Cloud Platform
+
+---
+
