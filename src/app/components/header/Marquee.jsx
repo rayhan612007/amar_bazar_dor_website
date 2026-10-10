@@ -1,3 +1,4 @@
+import NotFound from "@/app/not-found";
 import React from "react";
 import Marquee from "react-fast-marquee";
 import { FiMinus } from "react-icons/fi";
@@ -22,7 +23,7 @@ const PriceMarquee = async () => {
             ? data
             : data.products || data.data || [];
     } catch (error) {
-        console.error("Failed to fetch marquee data:", error);
+        <NotFound />
     }
 
     const getUnitText = (unit) => {
@@ -53,29 +54,20 @@ const PriceMarquee = async () => {
             <Marquee speed={150} pauseOnHover gradient={false}>
                 {products.map((item, index) => {
                     const changeValue = Number(
-                        item.change?.pct ??
-                        item.changePercent ??
-                        0
-                    );
+                        item.change?.pct);
+
 
                     const isUp =
-                        item.change?.dir === "up" ||
-                        (!item.change?.dir && changeValue > 0);
+                        item.change?.dir === "up";
 
                     const isDown =
-                        item.change?.dir === "down" ||
-                        (!item.change?.dir && changeValue < 0);
+                        item.change?.dir === "down";
 
                     const arrow = isUp
                         ? <GoTriangleUp className="text-2xl text-red-500" />
                         : isDown
                             ? <GoTriangleDown className="text-2xl text-emerald-600" />
                             : <FiMinus className="text-gray-500 text-2xl" />;
-                    const parsent = isUp
-                        ? "%"
-                        : isDown
-                            ? "%"
-                            : "";
 
                     return (
                         <div
@@ -97,11 +89,12 @@ const PriceMarquee = async () => {
                             </span>
 
                             {/* Price Change */}
-                            <span className="flex items-center gap-1 text-xs font-bold">
+                            <span className="flex items-center text-xs font-bold">
                                 <span>{arrow}</span>
                                 <span>
                                     {toBanglaNumber(Math.abs(changeValue))}
-                                    {changeValue !== 0 ? "%" : ""}
+                                    {item.change?.dir === "flat" ? ".০" : ""}
+                                    %
                                 </span>
                             </span>
                         </div>

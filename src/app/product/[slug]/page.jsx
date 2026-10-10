@@ -268,7 +268,7 @@ export default async function ProductDetailPage({ params }) {
                         )}
 
                         <span>
-                            {Math.abs(changePct).toLocaleString("bn-BD")}
+                            {Math.abs(changePct === 0 ? 0.0 : changePct).toLocaleString("bn-BD")}
                             %
                         </span>
                     </span>

@@ -9,6 +9,7 @@ const ProductCard = ({ product }) => {
         change.pct ?? product?.changePercent ?? 0
     );
 
+
     const direction =
         change.dir ||
         (changeValue > 0 ? "up" : changeValue < 0 ? "down" : "flat");
@@ -76,6 +77,7 @@ const ProductCard = ({ product }) => {
 
                             <span>
                                 {Math.abs(changeValue).toLocaleString("bn-BD")}
+                                {change.dir === "flat" ? ".০" : ""}
                                 %
                             </span>
                         </span>
