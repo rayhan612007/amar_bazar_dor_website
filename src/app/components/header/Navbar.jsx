@@ -46,59 +46,62 @@ const Navbar = async () => {
     });
 
     return (
-        <header className="border-b border-base-200 bg-base-100 shadow-sm">
-            {/* Top Bar */}
-            <div className="container mx-auto flex items-center justify-between px-4 py-3">
-                {/* Brand Logo & Name */}
-                <Link
-                    href="/"
-                    className="group flex items-center gap-3"
-                >
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-md shadow-emerald-600/30 transition-transform group-hover:scale-105">
-                        <Image
-                            src="/logo-icon.png"
-                            alt="বাজার দর লোগো"
-                            width={28}
-                            height={28}
-                            priority
-                            className="object-contain"
-                        />
-                    </div>
+        <header className="sticky top-0 z-10 border-base-200 bg-base-100 shadow-sm">
+            {/* navbar */}
+            <div className="">
+                {/* Top Bar */}
+                <div className="container mx-auto flex items-center justify-between px-4 py-3">
+                    {/* Brand Logo & Name */}
+                    <Link
+                        href="/"
+                        className="group flex items-center gap-3"
+                    >
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-md shadow-emerald-600/30 transition-transform group-hover:scale-105">
+                            <Image
+                                src="/logo-icon.png"
+                                alt="বাজার দর লোগো"
+                                width={28}
+                                height={28}
+                                priority
+                                className="object-contain"
+                            />
+                        </div>
 
-                    <div>
-                        <h1 className="text-xl font-bold tracking-tight text-base-content md:text-2xl">
-                            বাজার{" "}
-                            <span className="text-emerald-600">
-                                দর
+                        <div>
+                            <h1 className="text-xl font-bold tracking-tight text-base-content md:text-2xl">
+                                বাজার{" "}
+                                <span className="text-emerald-600">
+                                    দর
+                                </span>
+                            </h1>
+
+                            <p className="hidden text-xs text-base-content/60 md:block">
+                                {today}
+                            </p>
+                        </div>
+                    </Link>
+
+                    {/* Authentication */}
+                    <Navlog />
+                </div>
+
+                {/* Categories Navigation */}
+                <Suspense
+                    fallback={
+                        <div className="flex items-center justify-center gap-2 border-y border-base-300 bg-base-200/60 p-3">
+                            <span className="loading loading-dots loading-sm text-emerald-600" />
+                            <span className="text-sm text-base-content/60">
+                                ক্যাটাগরি লোড হচ্ছে...
                             </span>
-                        </h1>
-
-                        <p className="hidden text-xs text-base-content/60 md:block">
-                            {today}
-                        </p>
-                    </div>
-                </Link>
-
-                {/* Authentication */}
-                <Navlog />
+                        </div>
+                    }
+                >
+                    <CategoriesWrapper />
+                </Suspense>
             </div>
+            {/* Price Ticker
+            <Marquee /> */}
 
-            {/* Categories Navigation */}
-            <Suspense
-                fallback={
-                    <div className="flex items-center justify-center gap-2 border-y border-base-300 bg-base-200/60 p-3">
-                        <span className="loading loading-dots loading-sm text-emerald-600" />
-                        <span className="text-sm text-base-content/60">
-                            ক্যাটাগরি লোড হচ্ছে...
-                        </span>
-                    </div>
-                }
-            >
-                <CategoriesWrapper />
-            </Suspense>
-
-            {/* Price Ticker */}
-            <Marquee />
         </header>
     );
 };

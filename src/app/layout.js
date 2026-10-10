@@ -5,6 +5,8 @@ import Navbar from "./components/header/Navbar";
 import Footer from "./components/header/Footer";
 import { ToastContainer } from "react-toastify";
 import { Suspense } from "react";
+import Marquee from "react-fast-marquee";
+import PriceMarquee from "./components/header/Marquee";
 
 const notoserifbengali = Noto_Serif_Bengali({
   subsets: ["bengali"],
@@ -42,8 +44,10 @@ export default function RootLayout({ children }) {
           />
 
           <Navbar />
+          {/* <Header /> */}
+          <PriceMarquee />
 
-          <div className="flex-1">
+          <div className="flex-1 max-w-6xl container mx-auto">
             {children}
           </div>
 
