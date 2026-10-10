@@ -46,7 +46,7 @@ export default function ProductList({ category, initialProducts = [] }) {
                             {categoryName}
                         </h1>
                         <p className="mt-1 text-sm text-gray-600">
-                            মোট {productCountText}টি পণ্যের আজকের দাম ও পরিবর্তন
+                            {productCountText}টি পণ্যের আজকের দাম ও পরিবর্তন
                         </p>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ export default function ProductList({ category, initialProducts = [] }) {
                         // <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-12 text-center text-gray-500">
                         //     এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।
                         // </div>
-                        <NotFound/>
+                        <NotFound />
                     )
                 }
             </div>

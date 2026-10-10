@@ -158,10 +158,7 @@ export default async function ProductDetailPage({ params }) {
 
     // Calculate the average of all market averages.
     const average = markets.length
-        ? markets.reduce(
-            (sum, market) => sum + market.average,
-            0
-        ) / markets.length
+        ? (lowestMarket.min + highestMarket.max) / 2
         : 0;
 
     // Sort markets from lowest average price to highest.
@@ -247,7 +244,7 @@ export default async function ProductDetailPage({ params }) {
                     </div>
                 </div>
 
-                <div className="bg-gray-100 py-5 px-4 rounded-2xl text-center sm:text-right border-0 shrink-0">
+                <div className="bg-gray-100 py-5 px-3 rounded-2xl text-center sm:text-right border-0 shrink-0">
                     <span className="text-xs text-center text-gray-500 block">
                         আজকের দাম
                     </span>
