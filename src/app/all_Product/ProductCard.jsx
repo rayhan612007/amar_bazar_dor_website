@@ -64,12 +64,7 @@ const ProductCard = ({ product }) => {
 
                         {/* Price Change Badge */}
                         <span
-                            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${direction === "up"
-                                ? "bg-red-50 text-red-500"
-                                : direction === "down"
-                                    ? "bg-green-50 text-green-600"
-                                    : "bg-gray-100 text-gray-600"
-                                }`}
+                            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium `}
                         >
                             {direction === "up" ? (
                                 <GoTriangleUp className="text-2xl text-red-500" />
@@ -81,13 +76,7 @@ const ProductCard = ({ product }) => {
 
                             <span>
                                 {Math.abs(changeValue).toLocaleString("bn-BD")}
-                                {direction === "up" ? (
-                                    "%"
-                                ) : direction === "down" ? (
-                                    "%"
-                                ) : (
-                                    ""
-                                )}
+                                %
                             </span>
                         </span>
                     </div>
